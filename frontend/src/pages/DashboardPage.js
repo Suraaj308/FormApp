@@ -1,5 +1,5 @@
 // src/pages/DashboardPage.js
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import EmployeeForm from "../components/EmployeeForm";
 import "../styles/DashboardPage.css";
 
@@ -34,22 +34,44 @@ function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [employeeToEdit, setEmployeeToEdit] = useState(null);
 
-  // Derived stats
+  // Search & Filter States
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genderFilter, setGenderFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  // Derived stats (based on full list, not filtered)
   const totalEmployees = employees.length;
   const activeEmployees = employees.filter((emp) => emp.active).length;
   const inactiveEmployees = totalEmployees - activeEmployees;
 
-  // Unified save handler (used for both add and edit)
+  // Filtered employees using useMemo for performance
+  const filteredEmployees = useMemo(() => {
+    return employees.filter((emp) => {
+      const matchesSearch = emp.fullName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const matchesGender =
+        genderFilter === "All" || emp.gender === genderFilter;
+
+      const matchesStatus =
+        statusFilter === "All" ||
+        (statusFilter === "Active" && emp.active) ||
+        (statusFilter === "Inactive" && !emp.active);
+
+      return matchesSearch && matchesGender && matchesStatus;
+    });
+  }, [employees, searchTerm, genderFilter, statusFilter]);
+
+  // Handlers
   const handleSaveEmployee = (employeeData, editId = null) => {
     if (editId) {
-      // Edit existing
       setEmployees(
         employees.map((emp) =>
           emp.id === editId ? { ...emp, ...employeeData } : emp
         )
       );
     } else {
-      // Add new
       const newId = `EMP${String(employees.length + 1).padStart(3, "0")}`;
       setEmployees([...employees, { id: newId, ...employeeData }]);
     }
@@ -68,7 +90,12 @@ function DashboardPage() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setEmployeeToEdit(null); // Clear edit mode
+    setEmployeeToEdit(null);
+  };
+
+  const openAddModal = () => {
+    setEmployeeToEdit(null);
+    setIsModalOpen(true);
   };
 
   return (
@@ -96,15 +123,46 @@ function DashboardPage() {
       <section className="employee-list-section">
         <div className="section-header">
           <h2>Employee List</h2>
-          <button
-            className="add-btn"
-            onClick={() => {
-              setEmployeeToEdit(null);
-              setIsModalOpen(true);
-            }}
-          >
+          <button className="add-btn" onClick={openAddModal}>
             + Add Employee
           </button>
+        </div>
+
+        {/* Search & Filter Bar */}
+        <div className="search-filter-bar">
+          <div className="search-input-wrapper">
+            <input
+              type="text"
+              placeholder="Search by Full Name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
+
+          <div className="filters-wrapper">
+            <select
+              value={genderFilter}
+              onChange={(e) => setGenderFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Genders</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Status</option>
+              <option value="Active">Active Only</option>
+              <option value="Inactive">Inactive Only</option>
+            </select>
+          </div>
         </div>
 
         {/* Employee Table */}
@@ -122,14 +180,16 @@ function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {employees.length === 0 ? (
+              {filteredEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: "center" }}>
-                    No employees yet. Add one!
+                  <td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>
+                    {employees.length === 0
+                      ? "No employees yet. Add one!"
+                      : "No employees match your search/filter."}
                   </td>
                 </tr>
               ) : (
-                employees.map((emp) => (
+                filteredEmployees.map((emp) => (
                   <tr key={emp.id}>
                     <td>{emp.id}</td>
                     <td>{emp.fullName}</td>
@@ -165,7 +225,7 @@ function DashboardPage() {
         </div>
       </section>
 
-      {/* Reusable Modal Form for Add & Edit */}
+      {/* Reusable Modal Form */}
       <EmployeeForm
         isOpen={isModalOpen}
         onClose={closeModal}
