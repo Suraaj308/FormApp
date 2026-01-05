@@ -1,9 +1,8 @@
 // src/components/EmployeeForm.js
 import { useState, useEffect } from "react";
-import "../styles/EmployeeForm.css"; // We'll update the CSS name too
+import "../styles/EmployeeForm.css";
 
 function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
-  // Determine if we're in "edit" or "add" mode
   const isEditing = !!employeeToEdit;
 
   const [formData, setFormData] = useState({
@@ -12,29 +11,55 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
     dob: "",
     state: "",
     active: true,
+    photo: "", // Will hold filename or base64
   });
 
-  // When employeeToEdit changes (or modal opens), populate form
+  const [photoPreview, setPhotoPreview] = useState(""); // For live preview (always full src)
+
+  // Populate form when editing or adding
   useEffect(() => {
     if (isEditing && employeeToEdit) {
+      const photoValue = employeeToEdit.photo || "";
+      const previewSrc = photoValue.startsWith("data:")
+        ? photoValue
+        : `/icons/${photoValue}`;
+
       setFormData({
-        fullName: employeeToEdit.fullName,
-        gender: employeeToEdit.gender,
-        dob: employeeToEdit.dob,
-        state: employeeToEdit.state,
-        active: employeeToEdit.active,
+        fullName: employeeToEdit.fullName || "",
+        gender: employeeToEdit.gender || "Male",
+        dob: employeeToEdit.dob || "",
+        state: employeeToEdit.state || "",
+        active: employeeToEdit.active ?? true,
+        photo: photoValue,
       });
+      setPhotoPreview(previewSrc);
     } else {
-      // Reset for "Add" mode
+      // Reset for Add mode
       setFormData({
         fullName: "",
         gender: "Male",
         dob: "",
         state: "",
         active: true,
+        photo: "",
       });
+      setPhotoPreview("");
     }
   }, [employeeToEdit, isEditing, isOpen]);
+
+  // Handle photo selection
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setFormData({ ...formData, photo: base64String });
+        setPhotoPreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -47,11 +72,10 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
       dob: formData.dob,
       state: formData.state,
       active: formData.active,
+      photo: formData.photo, // base64 if new, or original filename/base64
     };
 
-    // Pass data + original ID if editing
     onSave(employeeData, employeeToEdit?.id);
-
     onClose();
   };
 
@@ -66,6 +90,24 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
         <h2>{isEditing ? "Edit Employee" : "Add New Employee"}</h2>
 
         <form onSubmit={handleSubmit}>
+          {/* Photo Upload & Preview */}
+          <div className="form-group photo-group">
+            <label>Employee Photo</label>
+            <div className="photo-preview-container">
+              {photoPreview ? (
+                <img src={photoPreview} alt="Preview" className="photo-preview" />
+              ) : (
+                <div className="photo-placeholder">No Photo Selected</div>
+              )}
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="photo-input"
+            />
+          </div>
+
           <div className="form-group">
             <label>Full Name</label>
             <input
@@ -81,8 +123,6 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
             <select value={formData.gender} onChange={handleChange("gender")}>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Non-binary">Non-binary</option>
-              <option value="Other">Other</option>
             </select>
           </div>
 

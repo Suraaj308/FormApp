@@ -6,27 +6,30 @@ function DashboardPage() {
   const [employees, setEmployees] = useState([
     {
       id: "EMP001",
-      fullName: "John Doe",
+      fullName: "Yuji Itadori",
       gender: "Male",
       dob: "1990-05-15",
       state: "California",
       active: true,
+      photo: "Yuji_Itadori.jpg",
     },
     {
       id: "EMP002",
-      fullName: "Jane Smith",
+      fullName: "Nobara Kugisaki",
       gender: "Female",
       dob: "1995-08-22",
       state: "Texas",
-      active: false,
+      active: true,
+      photo: "Nobara_Kugisaki.jpg",
     },
     {
       id: "EMP003",
-      fullName: "Alex Rivera",
-      gender: "Non-binary",
+      fullName: "Megumi Fushiguro",
+      gender: "Male",
       dob: "1988-12-10",
       state: "New York",
-      active: true,
+      active: false,
+      photo: "Megumi_Fushiguro.jpg",
     },
   ]);
 
@@ -110,11 +113,11 @@ function DashboardPage() {
             <p>{totalEmployees}</p>
           </div>
           <div>
-            <h3>Active</h3>
+            <h3>Active Employees</h3>
             <p>{activeEmployees}</p>
           </div>
           <div>
-            <h3>Inactive</h3>
+            <h3>Inactive Employees</h3>
             <p>{inactiveEmployees}</p>
           </div>
         </div>
@@ -122,11 +125,19 @@ function DashboardPage() {
 
       {/* Employee List */}
       <section className="employee-list-section">
+        {/* Title & Add Button */}
         <div className="section-header">
           <h3>Employee List</h3>
-          <button className="add-btn" onClick={openAddModal}>
-            + Add Employee
-          </button>
+          <div className="header-buttons">
+            <button
+              className="print-button" onClick={() => window.print()}
+            >
+              Print
+            </button>
+            <button className="add-button" onClick={openAddModal}>
+              + Add Employee
+            </button>
+          </div>
         </div>
 
         {/* Search & Filter Bar */}
@@ -147,11 +158,9 @@ function DashboardPage() {
               onChange={(e) => setGenderFilter(e.target.value)}
               className="filter-select"
             >
-              <option value="All">All Genders</option>
+              <option value="All">Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Non-binary">Non-binary</option>
-              <option value="Other">Other</option>
             </select>
 
             <select
@@ -159,7 +168,7 @@ function DashboardPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="filter-select"
             >
-              <option value="All">All Status</option>
+              <option value="All">Status</option>
               <option value="Active">Active Only</option>
               <option value="Inactive">Inactive Only</option>
             </select>
@@ -172,6 +181,7 @@ function DashboardPage() {
             <thead>
               <tr>
                 <th>Employee ID</th>
+                <th>Employee Photo</th>
                 <th>Full Name</th>
                 <th>Gender</th>
                 <th>Date of Birth</th>
@@ -193,6 +203,17 @@ function DashboardPage() {
                 filteredEmployees.map((emp) => (
                   <tr key={emp.id}>
                     <td>{emp.id}</td>
+                    <td className="photo-cell">
+                      {emp.photo ? (
+                        <img
+                          src={emp.photo.startsWith("data:") ? emp.photo : `/icons/${emp.photo}`}
+                          alt={emp.fullName}
+                          className="employee-photo"
+                        />
+                      ) : (
+                        <div className="no-photo">No Photo</div>
+                      )}
+                    </td>
                     <td>{emp.fullName}</td>
                     <td>{emp.gender}</td>
                     <td>{emp.dob}</td>
@@ -206,13 +227,13 @@ function DashboardPage() {
                     </td>
                     <td>
                       <button
-                        className="action-btn edit"
+                        className="action-button edit"
                         onClick={() => handleEdit(emp)}
                       >
                         Edit
                       </button>
                       <button
-                        className="action-btn delete"
+                        className="action-button delete"
                         onClick={() => handleDelete(emp.id)}
                       >
                         Delete

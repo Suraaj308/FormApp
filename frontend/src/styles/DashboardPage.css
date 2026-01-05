@@ -64,8 +64,7 @@
   flex: 1;
   background-color: #ffffff;
   border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   display: flex;
   flex-direction: column;
 }
@@ -74,26 +73,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .section-header h2 {
   margin: 0;
-  color: #333;
+  color: #000000;
 }
 
-.add-btn {
-  background-color: #007bff;
+.add-button {
+  background-color: #3a99ff;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1rem;
 }
 
-.add-btn:hover {
-  background-color: #0056b3;
+.add-button:hover {
+  background-color: #003e80;
+}
+
+.print-button {
+  background-color: #00be00;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.print-button:hover {
+  background-color: #028000;
 }
 
 /* Add Form */
@@ -143,20 +162,22 @@
 
 .employee-table th,
 .employee-table td {
-  padding: 12px;
+  padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #838383;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
 }
 
 .employee-table th {
-  background-color: #f8f9fa;
-  color: #444;
+  background-color: #242424;
+  color: white;
   font-weight: 600;
 }
 
 .status {
-  padding: 5px 10px;
-  border-radius: 20px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
   font-size: 0.85rem;
   font-weight: bold;
 }
@@ -171,34 +192,34 @@
   color: #721c24;
 }
 
-.action-btn {
-  margin-right: 8px;
-  padding: 6px 12px;
+.action-button {
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
 }
 
-.action-btn.edit {
+.action-button.edit {
   background-color: #ffc107;
-  color: #212529;
+  color: #242424;
 }
 
-.action-btn.delete {
+.action-button.delete {
   background-color: #dc3545;
-  color: white;
+  color: #242424;
 }
 
 /* Search & Filter Bar */
 .search-filter-bar {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #242424;
+  border-radius: 0.5rem;
+  border: 1px solid #ffffff;
 }
 
 @media (min-width: 768px) {
@@ -246,4 +267,136 @@
 .filter-select:focus {
   outline: none;
   border-color: #007bff;
+}
+
+/* Employee Photo in Table */
+.photo-cell {
+  text-align: center;
+  padding: 0.5rem !important;
+}
+
+.employee-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.no-photo {
+  width: 50px;
+  height: 50px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .employee-list-section,
+  .employee-list-section * {
+    visibility: visible;
+  }
+
+  .employee-list-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    padding: 20px;
+  }
+
+  /* Hide buttons and filters during print */
+  .section-header,
+  .search-filter-bar,
+  .header-buttons,
+  .action-button {
+    display: none !important;
+  }
+
+  /* Make table full width and clean */
+  .table-container {
+    overflow: visible !important;
+  }
+
+  .employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12pt;
+  }
+
+  .employee-table th {
+    background-color: #f0f0f0 !important;
+    color: black !important;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #000;
+  }
+
+  .employee-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+
+  /* Keep photos visible and sized nicely */
+  .employee-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #000;
+  }
+
+  .no-photo {
+    width: 60px;
+    height: 60px;
+    background: #eee;
+    border: 2px dashed #999;
+    font-size: 10pt;
+  }
+
+  /* Status badges */
+  .status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+  }
+
+  .status.active {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+  }
+
+  .status.inactive {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+  }
+
+  /* Add title on print */
+  .employee-list-section::before {
+    content: "Employee List Report";
+    display: block;
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000;
+  }
+
+  /* Page break avoidance */
+  .employee-table tr {
+    page-break-inside: avoid;
+  }
 }
