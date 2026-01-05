@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.js
 import { useState, useMemo } from "react";
 import EmployeeForm from "../components/EmployeeForm";
 import "../styles/DashboardPage.css";
@@ -102,17 +101,19 @@ function DashboardPage() {
     <div className="dashboard-container">
       {/* Dashboard Summary */}
       <section className="summary-section">
-        <h2>Dashboard Summary</h2>
-        <div className="summary-cards">
-          <div className="card">
+        <div className="title">
+          <h3>Dashboard Summary</h3>
+        </div>
+        <div className="cards">
+          <div>
             <h3>Total Employees</h3>
             <p>{totalEmployees}</p>
           </div>
-          <div className="card active">
+          <div>
             <h3>Active</h3>
             <p>{activeEmployees}</p>
           </div>
-          <div className="card inactive">
+          <div>
             <h3>Inactive</h3>
             <p>{inactiveEmployees}</p>
           </div>
@@ -122,7 +123,7 @@ function DashboardPage() {
       {/* Employee List */}
       <section className="employee-list-section">
         <div className="section-header">
-          <h2>Employee List</h2>
+          <h3>Employee List</h3>
           <button className="add-btn" onClick={openAddModal}>
             + Add Employee
           </button>
