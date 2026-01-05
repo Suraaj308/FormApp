@@ -8,7 +8,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -24,32 +24,34 @@ function LoginPage() {
   };
 
   return (
-    <div className="login-container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-
-      <p><small>Hint: admin / password123</small></p>
+    <div className="loginpage-container">
+      <div className='login-container'>
+        <h1>LOGIN PAGE</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Username:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <button type="submit">Login</button>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

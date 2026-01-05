@@ -1,35 +1,65 @@
+.loginpage-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: #242424;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  background-color: #fff;
+  height: 50%;
+  width: 50%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .login-container h1 {
-  margin-bottom: 30px;
-  color: #333;
+  height: 25%;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 }
 
-.login-container form div {
-  margin-bottom: 15px;
-  text-align: left;
+.login-container form {
+  height: 75%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-container form>div {
+  flex: 1;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-container label {
   display: block;
-  margin-bottom: 5px;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .login-container input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 0.75rem;
+  border: 0.125rem solid #ddd;
+  border-radius: 0.5rem;
   box-sizing: border-box;
 }
 
