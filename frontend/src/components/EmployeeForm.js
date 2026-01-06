@@ -11,12 +11,11 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
     dob: "",
     state: "",
     active: true,
-    photo: "", // Will hold filename or base64
+    photo: "",
   });
 
-  const [photoPreview, setPhotoPreview] = useState(""); // For live preview (always full src)
+  const [photoPreview, setPhotoPreview] = useState("");
 
-  // Populate form when editing or adding
   useEffect(() => {
     if (isEditing && employeeToEdit) {
       const photoValue = employeeToEdit.photo || "";
@@ -34,7 +33,6 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
       });
       setPhotoPreview(previewSrc);
     } else {
-      // Reset for Add mode
       setFormData({
         fullName: "",
         gender: "Male",
@@ -47,7 +45,6 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
     }
   }, [employeeToEdit, isEditing, isOpen]);
 
-  // Handle photo selection
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -65,16 +62,7 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const employeeData = {
-      fullName: formData.fullName,
-      gender: formData.gender,
-      dob: formData.dob,
-      state: formData.state,
-      active: formData.active,
-      photo: formData.photo, // base64 if new, or original filename/base64
-    };
-
+    const employeeData = { ...formData };
     onSave(employeeData, employeeToEdit?.id);
     onClose();
   };
@@ -90,62 +78,72 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
         <h2>{isEditing ? "Edit Employee" : "Add New Employee"}</h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Photo Upload & Preview */}
+          {/* Photo Section - Side by Side */}
           <div className="form-group photo-group">
             <label>Employee Photo</label>
-            <div className="photo-preview-container">
-              {photoPreview ? (
-                <img src={photoPreview} alt="Preview" className="photo-preview" />
-              ) : (
-                <div className="photo-placeholder">No Photo Selected</div>
-              )}
+            <div className="photo-row">
+              <div className="photo-preview-container">
+                {photoPreview ? (
+                  <img src={photoPreview} alt="Preview" className="photo-preview" />
+                ) : (
+                  <div className="photo-placeholder">No Photo</div>
+                )}
+              </div>
+              <div className="photo-upload-wrapper">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="photo-input"
+                />
+                <small>Click to select or replace photo</small>
+              </div>
             </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoChange}
-              className="photo-input"
-            />
           </div>
 
-          <div className="form-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              required
-              value={formData.fullName}
-              onChange={handleChange("fullName")}
-            />
+          {/* Full Name + Gender */}
+          <div className="form-row">
+            <div className="form-group half">
+              <label>Full Name</label>
+              <input
+                type="text"
+                required
+                value={formData.fullName}
+                onChange={handleChange("fullName")}
+              />
+            </div>
+            <div className="form-group half">
+              <label>Gender</label>
+              <select value={formData.gender} onChange={handleChange("gender")}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Gender</label>
-            <select value={formData.gender} onChange={handleChange("gender")}>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
+          {/* Date of Birth + State */}
+          <div className="form-row">
+            <div className="form-group half">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                required
+                value={formData.dob}
+                onChange={handleChange("dob")}
+              />
+            </div>
+            <div className="form-group half">
+              <label>State</label>
+              <input
+                type="text"
+                required
+                value={formData.state}
+                onChange={handleChange("state")}
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Date of Birth</label>
-            <input
-              type="date"
-              required
-              value={formData.dob}
-              onChange={handleChange("dob")}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>State</label>
-            <input
-              type="text"
-              required
-              value={formData.state}
-              onChange={handleChange("state")}
-            />
-          </div>
-
+          {/* Active Checkbox */}
           <div className="form-group checkbox">
             <label>
               <input
@@ -157,6 +155,7 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
             </label>
           </div>
 
+          {/* Actions */}
           <div className="form-actions">
             <button type="submit" className="save-btn">
               {isEditing ? "Update Employee" : "Save Employee"}
