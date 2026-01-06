@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+===================================================================================================
+Project Overview :
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The following is a Frontend React JS based application. This application has a Login page.
+The credentails are hardcoded. Username = admin & Password = password123
+Upon starting the application, we land on the Login Page. And other than it, we have a Dashboard Page (localhost:3000/dashboard)
+The dashboard page can't be directly accessed, we can only access it via Login.
 
-## Available Scripts
+After entering the Dashboard, the page has few metrics showcasing some values related to the Employees count.
+Below it, we have an Employee Table. (Ideally it has 3 hardcoded records)
+These hardcoded records can be changed. And more can be added via the +Add Employee (blue button)
+Upon Clicking the +Add Employee or Edit Employee, we get a form to fill details correspondingly
+In such manner an employee record can be added or altered. And other fileds would be updated based on it.
+The Green button is the print button to print the table of list of employees based on filters.
 
-In the project directory, you can run:
+There is a search bar that filters records based on text (Name of employees)
+And other fields that filter records based on Gender and Activity Status of Employee. They can be overlapped as well
+And finally a Delete Button to delete record in the table. And a Logout Button to sign out of the page.
+After Sign out, all the stored Data is deleted. (Since this applciaiton is frontend based we don't store Data)
 
-### `npm start`
+===================================================================================================
+TechStack Used :
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. HTML
+2. CSS (Vanilla CSS, No frameworks were used)
+3. JS
+4. ReactJS Framework for the Application
+5. VS Code for Code Editing and Terminal
+6. Google Chrome (As the browser)
+===================================================================================================
+Steps to run the project Locally :
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The Project Folder would be FormApp. And inside this, there is the frontend folder.
+1. Cd frontend  (in the VS code terminal)
+2. npm start (to start the react app)
+3. Go to chrome or any modren web-browser and enter localhost:3000 (React runs on default 3000 Port)
+===================================================================================================
+Design Desicions :
 
-### `npm test`
+I've used a Logout Button, even tho it wasn't mentioned. Just to ensure the whole project comes full circle.
+And I've put 3 hardcoded records to replicate the idea of data loaded table, instead of manual Additons
+===================================================================================================
+Login Credentials :
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+username : admin
+password : password123
+===================================================================================================
