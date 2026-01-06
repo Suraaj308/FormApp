@@ -32,8 +32,9 @@ Steps to run the project Locally :
 
 The Project Folder would be FormApp. And inside this, there is the frontend folder.
 1. Cd frontend  (in the VS code terminal)
-2. npm start (to start the react app)
-3. Go to chrome or any modren web-browser and enter localhost:3000 (React runs on default 3000 Port)
+2. npm install (a safe measure to ensure all the necessarry dependencies are installed)
+3. npm start (to start the react app)
+4. Go to chrome or any modren web-browser and enter localhost:3000 (React runs on default 3000 Port)
 ===================================================================================================
 Design Desicions :
 
