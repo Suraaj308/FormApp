@@ -17,6 +17,7 @@
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .summary-section .title h3 {
@@ -398,5 +399,43 @@
   /* Page break avoidance */
   .employee-table tr {
     page-break-inside: avoid;
+  }
+}
+
+/* Logout Button in Summary */
+.summary-section .title {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+/* S No column */
+.employee-table th:first-child,
+.employee-table td:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+/* Adjust print styles for new S No column */
+@media print {
+
+  .employee-table th:first-child,
+  .employee-table td:first-child {
+    width: auto;
   }
 }

@@ -1,8 +1,11 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom"; // Add this import
 import EmployeeForm from "../components/EmployeeForm";
 import "../styles/DashboardPage.css";
 
 function DashboardPage() {
+  const navigate = useNavigate();
+
   const [employees, setEmployees] = useState([
     {
       id: "EMP001",
@@ -35,27 +38,18 @@ function DashboardPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [employeeToEdit, setEmployeeToEdit] = useState(null);
-
-  // Search & Filter States
   const [searchTerm, setSearchTerm] = useState("");
   const [genderFilter, setGenderFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
 
-  // Derived stats (based on full list, not filtered)
   const totalEmployees = employees.length;
   const activeEmployees = employees.filter((emp) => emp.active).length;
   const inactiveEmployees = totalEmployees - activeEmployees;
 
-  // Filtered employees using useMemo for performance
   const filteredEmployees = useMemo(() => {
     return employees.filter((emp) => {
-      const matchesSearch = emp.fullName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-
-      const matchesGender =
-        genderFilter === "All" || emp.gender === genderFilter;
-
+      const matchesSearch = emp.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesGender = genderFilter === "All" || emp.gender === genderFilter;
       const matchesStatus =
         statusFilter === "All" ||
         (statusFilter === "Active" && emp.active) ||
@@ -65,14 +59,9 @@ function DashboardPage() {
     });
   }, [employees, searchTerm, genderFilter, statusFilter]);
 
-  // Handlers
   const handleSaveEmployee = (employeeData, editId = null) => {
     if (editId) {
-      setEmployees(
-        employees.map((emp) =>
-          emp.id === editId ? { ...emp, ...employeeData } : emp
-        )
-      );
+      setEmployees(employees.map((emp) => (emp.id === editId ? { ...emp, ...employeeData } : emp)));
     } else {
       const newId = `EMP${String(employees.length + 1).padStart(3, "0")}`;
       setEmployees([...employees, { id: newId, ...employeeData }]);
@@ -80,7 +69,12 @@ function DashboardPage() {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this employee?")) {
+    const employee = employees.find((emp) => emp.id === id);
+    if (
+      window.confirm(
+        `Delete employee "${employee.fullName}" (ID: ${employee.id})?\nThis action cannot be undone.`
+      )
+    ) {
       setEmployees(employees.filter((emp) => emp.id !== id));
     }
   };
@@ -100,12 +94,21 @@ function DashboardPage() {
     setIsModalOpen(true);
   };
 
+  const handleLogout = () => {
+    // Clear any runtime-added data (if you later use localStorage)
+    // For now, just redirect
+    navigate("/");
+  };
+
   return (
     <div className="dashboard-container">
       {/* Dashboard Summary */}
       <section className="summary-section">
         <div className="title">
           <h3>Dashboard Summary</h3>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
         <div className="cards">
           <div>
@@ -125,13 +128,10 @@ function DashboardPage() {
 
       {/* Employee List */}
       <section className="employee-list-section">
-        {/* Title & Add Button */}
         <div className="section-header">
           <h3>Employee List</h3>
           <div className="header-buttons">
-            <button
-              className="print-button" onClick={() => window.print()}
-            >
+            <button className="print-button" onClick={() => window.print()}>
               Print
             </button>
             <button className="add-button" onClick={openAddModal}>
@@ -140,7 +140,6 @@ function DashboardPage() {
           </div>
         </div>
 
-        {/* Search & Filter Bar */}
         <div className="search-filter-bar">
           <div className="search-input-wrapper">
             <input
@@ -175,11 +174,11 @@ function DashboardPage() {
           </div>
         </div>
 
-        {/* Employee Table */}
         <div className="table-container">
           <table className="employee-table">
             <thead>
               <tr>
+                <th>S No</th>
                 <th>Employee ID</th>
                 <th>Employee Photo</th>
                 <th>Full Name</th>
@@ -193,15 +192,16 @@ function DashboardPage() {
             <tbody>
               {filteredEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>
+                  <td colSpan="9" style={{ textAlign: "center", padding: "20px" }}>
                     {employees.length === 0
                       ? "No employees yet. Add one!"
                       : "No employees match your search/filter."}
                   </td>
                 </tr>
               ) : (
-                filteredEmployees.map((emp) => (
+                filteredEmployees.map((emp, index) => (
                   <tr key={emp.id}>
+                    <td>{index + 1}</td>
                     <td>{emp.id}</td>
                     <td className="photo-cell">
                       {emp.photo ? (
@@ -219,23 +219,15 @@ function DashboardPage() {
                     <td>{emp.dob}</td>
                     <td>{emp.state}</td>
                     <td>
-                      <span
-                        className={`status ${emp.active ? "active" : "inactive"}`}
-                      >
+                      <span className={`status ${emp.active ? "active" : "inactive"}`}>
                         {emp.active ? "Active" : "Inactive"}
                       </span>
                     </td>
                     <td>
-                      <button
-                        className="action-button edit"
-                        onClick={() => handleEdit(emp)}
-                      >
+                      <button className="action-button edit" onClick={() => handleEdit(emp)}>
                         Edit
                       </button>
-                      <button
-                        className="action-button delete"
-                        onClick={() => handleDelete(emp.id)}
-                      >
+                      <button className="action-button delete" onClick={() => handleDelete(emp.id)}>
                         Delete
                       </button>
                     </td>
@@ -247,7 +239,6 @@ function DashboardPage() {
         </div>
       </section>
 
-      {/* Reusable Modal Form */}
       <EmployeeForm
         isOpen={isModalOpen}
         onClose={closeModal}

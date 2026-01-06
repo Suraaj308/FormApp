@@ -134,12 +134,21 @@ function EmployeeForm({ isOpen, onClose, onSave, employeeToEdit }) {
             </div>
             <div className="form-group half">
               <label>State</label>
-              <input
-                type="text"
+              <select
                 required
                 value={formData.state}
                 onChange={handleChange("state")}
-              />
+              >
+                <option value="">Select a state</option>
+                <option value="California">California</option>
+                <option value="Texas">Texas</option>
+                <option value="New York">New York</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Michigan">Michigan</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="Florida">Florida</option>
+                <option value="Georgia">Georgia</option>
+              </select>
             </div>
           </div>
 
